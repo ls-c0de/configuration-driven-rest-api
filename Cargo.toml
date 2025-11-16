@@ -1,0 +1,10 @@
+[package]
+name = "declarative-rest-api-engine"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dotenvy = "0.15.7"
+serde = "1.0.228"
+tokio = "1.48.0"
+warp = "0.4.2"

@@ -1,0 +1,20 @@
+[user]
+table = "users"
+path = "/users"
+
+[user.fields.id]
+type = "i32"
+primary_key = true
+
+[user.fields.name]
+type = "String"
+nullable = false
+
+[user.endpoints.list]
+method = "GET"
+path = "/users"
+
+[entities.user.endpoints.create]
+method = "POST"
+path = "/users"
+body = "user"

@@ -1,0 +1,24 @@
+[shop]
+table = "shop"
+path = "/shop"
+
+[shop.fields.id]
+type = "i32"
+primary_key = true
+
+[shop.fields.name]
+type = "String"
+nullable = false
+
+[shop.fields.value]
+type = "String"
+nullable = false
+
+[shop.endpoints.list]
+method = "GET"
+path = "shops"
+
+[shop.endpoints.create]
+method = "POST"
+path = "shops"
+body = "shop"
