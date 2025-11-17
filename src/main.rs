@@ -32,7 +32,9 @@ fn watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
 
     // Automatically select the best implementation for your platform.
     // You can also access each implementation directly e.g. INotifyWatcher.
-    let mut watcher = RecommendedWatcher::new(tx, notify::Config::default())?;
+    let mut watcher = PollWatcher::new(
+        tx, 
+        notify::Config::default().with_poll_interval(Duration::from_secs(1)))?;
 
     // Add a path to be watched. All files and directories at that path and
     // below will be monitored for changes.
@@ -41,11 +43,8 @@ fn watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
     for res in rx {
         match res {
             Ok(event) => {
-                // 1. Nur echte File-Write Events akzeptieren
-                if !matches!(event.kind, EventKind::Modify(ModifyKind::Data(_))) {
-                    read_toml();
-                    
-                };
+                println!("Event: {event:?}");
+                read_toml();
             },
             Err(error) => println!("Error: {error:?}"),
         }
@@ -56,7 +55,15 @@ fn watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
 
 fn read_toml() {
     let data = fs::read_to_string("configs/shop.toml").expect("");
-    let config: Config = toml::from_str(&data).expect("");
+    let config: Config = match toml::from_str(&data) {
+        Ok(cfg) => cfg,
+        Err(e) => {
+            println!("Failed to read! {:?}", e);
+            Config {
+                field: vec![Field {name : "None".to_string(), datatype: "None".to_string()}], // Default Value
+            }
+        }
+    };
 
     println!("{:?}", config)
 }

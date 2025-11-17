@@ -1,17 +1,20 @@
-[shop]
+[cfg]
 table = "shop"
 path = "/shop"
 
-[shop.fields.id]
-type = "i32"
+[[field]]
+name = "ID"
+datatype = "i32"
 primary_key = true
 
-[shop.fields.name]
-type = "String"
+[[field]]
+name = "Title"
+datatype = "String"
 nullable = false
 
-[shop.fields.value]
-type = "String"
+[[field]]
+name = "Value"
+datatype = "String"
 nullable = false
 
 [shop.endpoints.list]
