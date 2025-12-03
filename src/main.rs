@@ -1,6 +1,6 @@
-use warp::{Filter, Reply};
-use serde::Deserialize;
+use std::vec;
 
+use warp::{Filter, filters::BoxedFilter, Reply};
 
 #[tokio::main]
 async fn main() {
@@ -13,10 +13,51 @@ async fn main() {
 
     //println!("{:?}", data);
 
-    let routes = build_routes();
+    let paths = vec!["hallo", "bye"];
+    let routes = build_filters_from_vec(paths);
 
-    serve(routes).await
+    serve(routes);
 }
+
+fn make_filter(stri: &str) -> warp::filters::BoxedFilter<(impl warp::Reply,)> {
+    warp::path(stri)
+        .map(move || format!("Hello from {}", path))
+        .boxed()
+}
+
+
+
+fn build_filters_from_vec(slice: Vec<&str>) 
+    -> impl Filter<Extract = (String,), Error = warp::Rejection> + Clone
+{
+    let iterator = slice.iter();
+    
+    let mut filters = warp::any()
+        .map(|| "".to_string())
+        .boxed();
+
+    // build paths and combine warp filters into one, then return it
+    for element in iterator {
+        dbg!("{}", element);
+
+        let path = element.clone();
+
+        let filter = warp::path(path)
+            .map(move || format!("Hi, you accessed {}", path))
+            .boxed();
+
+        filters = filters.or(filter).untuple_one().boxed();
+    }
+
+    // Dynamisch Filter generieren und kombinieren
+    let mut combined = warp::any().map(|| "Nothing").boxed();
+    for p in slice {
+        combined = combined.or(make_filter(p)).boxed();
+    }
+
+    return filters
+}
+
 
 fn greeting_route(prefix: &'static str)
     -> impl Filter<Extract = (String,), Error = warp::Rejection> + Clone
