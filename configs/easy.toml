@@ -1,0 +1,7 @@
+[[greeting]]
+name = "hello"
+text = "Hello to you"
+
+[[greeting]]
+name = "bye"
+text = "Bye to you"

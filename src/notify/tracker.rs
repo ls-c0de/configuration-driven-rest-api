@@ -45,7 +45,7 @@ fn watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
         match res {
             Ok(event) => {
                 println!("Event: {event:?}");
-                read_toml();
+             track_toml();
             },
             Err(error) => println!("Error: {error:?}"),
         }
@@ -54,7 +54,7 @@ fn watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
     Ok(())
 }
 
-fn read_toml() {
+fn track_toml() {
     let data = fs::read_to_string("configs/shop.toml").expect("");
     let config: Config = match toml::from_str(&data) {
         Ok(cfg) => cfg,
