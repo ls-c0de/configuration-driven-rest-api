@@ -14,7 +14,7 @@ async fn main() {
 
     //println!("{:?}", data);
 
-    let paths = vec!["hallo", "bye"];
+    let paths = vec!["peter", "thommy", "sarah", "john"];
     //let routes = build_filters_from_vec(paths);
 
     let routes = warp::path("paths")
@@ -22,16 +22,26 @@ async fn main() {
             warp::path::param()
                 .and_then(move |path: String| {
                     if paths.contains(&path.as_str()) {
-                        ready(Ok(()))
+                        ready(Ok(path))
                     } else {
                         ready(Err(warp::reject::not_found()))
                     }
                 })
-                .untuple_one(),
+                //.untuple_one(),
         )
-        .map(warp::reply);
+        .map(|path: String| {
+            format!("You are here: {}", path)
+        });
 
     serve(routes).await;
+}
+
+fn send_answer(stri: String) -> Result<String, ()> {
+    if stri.is_empty() == false {
+        Ok(format!("Hello from {}", stri))
+    } else {
+        Err(())
+    }
 }
 
 fn make_filter(stri: String) -> warp::filters::BoxedFilter<(String, )> {
