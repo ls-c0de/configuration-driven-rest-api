@@ -1,4 +1,5 @@
 use std::vec;
+use std::future::ready;
 
 use warp::{Filter, filters::BoxedFilter, Reply};
 
@@ -14,9 +15,23 @@ async fn main() {
     //println!("{:?}", data);
 
     let paths = vec!["hallo", "bye"];
-    let routes = build_filters_from_vec(paths);
+    //let routes = build_filters_from_vec(paths);
 
-    serve(routes);
+    let routes = warp::path("paths")
+        .and(
+            warp::path::param()
+                .and_then(move |path: String| {
+                    if paths.contains(&path.as_str()) {
+                        ready(Ok(()))
+                    } else {
+                        ready(Err(warp::reject::not_found()))
+                    }
+                })
+                .untuple_one(),
+        )
+        .map(warp::reply);
+
+    serve(routes).await;
 }
 
 fn make_filter(stri: String) -> warp::filters::BoxedFilter<(String, )> {
@@ -26,17 +41,17 @@ fn make_filter(stri: String) -> warp::filters::BoxedFilter<(String, )> {
 }
 
 fn build_filters_from_vec(slice: Vec<&str>) -> BoxedFilter<(String,)> {
-    let mut combined = warp::any()
+    let combined = warp::any()
         .map(|| "".to_string())
         .boxed();
 
-    let mut temp;
-    for p in slice {
-        dbg!("{}", p);
-        temp = combined.or(make_filter(p.to_string())).boxed();
-    }
+    //let mut temp;
+    //for p in slice {
+    //    dbg!("{}", p);
+    //    temp = combined.or(make_filter(p.to_string())).boxed();
+    //}
 
-    temp
+    combined
 }
 
 fn greeting_route(prefix: &'static str)
