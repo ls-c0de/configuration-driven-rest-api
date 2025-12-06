@@ -1,11 +1,9 @@
 use std::vec;
 use std::future::ready;
-
-use warp::{Filter, filters::BoxedFilter, Reply};
+use warp::{Filter,  Reply};
 
 #[tokio::main]
 async fn main() {
-    
     let paths = vec!["peter", "thommy", "sarah", "john"];
 
     let routes = warp::path("paths")
