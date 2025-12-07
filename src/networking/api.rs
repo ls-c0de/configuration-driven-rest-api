@@ -19,23 +19,24 @@ fn build_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (Stri
         })
 }
 
-async fn serve<F>(routes: F)
+async fn serve<F>(routes: F, address: [u8; 4], port: u16)
 where
     F: Filter + Clone + Send + Sync + 'static,
     F::Extract: Reply,
 {
     warp::serve(routes)
-        .run(([127,0,0,1], 3030))
+        .run((address, port))
         .await;
 }
 
-/// Starts the server with predefined paths for testing purposes.
+/// Starts the server with the given base and paths.
 /// 
-/// # Arguments
+/// ## Arguments
 /// * `base` - A string slice that holds the base path for the server.
 /// * `paths` - A vector of strings representing valid paths under the base.
+/// * `port` - The port number on which the server will listen.
 /// 
-pub async fn start_server(base: String, paths: Vec<String>) {
+pub async fn start_server(base: String, paths: Vec<String>, address: [u8; 4], port: u16) {
     let paths = paths
         .into_iter()
         .map(String::from)
@@ -43,18 +44,21 @@ pub async fn start_server(base: String, paths: Vec<String>) {
 
     let routes = build_filter(base, paths);
 
-    serve(routes).await;
+    serve(routes, address, port).await;
 }
 
-/// Starts the server with default base and paths for quick testing.
+/// Starts the server with default base and paths for quick testing on port 3030.
 ///
-pub async fn start_server_with_base_values() {
+/// ## Default Values
+/// * Base: "api"
+/// * Paths: ["hello", "bye"]
+/// 
+pub async fn start_server_with_base_values_locally() {
     let base = "api".to_string();
     let paths = vec![
-        "users".to_string(),
-        "posts".to_string(),
-        "comments".to_string(),
+        "hello".to_string(),
+        "bye".to_string(),
     ];
 
-    start_server(base, paths).await;
+    start_server(base, paths, [127,0,0,1], 3030).await;
 }
