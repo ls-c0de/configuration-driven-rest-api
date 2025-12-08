@@ -1,7 +1,13 @@
 mod networking;
 use crate::networking::api::{start_server_with_base_values_locally};
 
+mod io;
+use crate::io::loader::{load_config};
+
+
 #[tokio::main]
 async fn main() {
-    start_server_with_base_values_locally().await;
+    let conf = load_config();
+    dbg!("{}", conf);
+    //start_server_with_base_values_locally().await;
 }
