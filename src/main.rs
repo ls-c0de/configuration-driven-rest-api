@@ -2,7 +2,7 @@
 //use crate::networking::api::{start_server_with_base_values_locally};
 
 mod io;
-use crate::io::loader::{load_config};
+use crate::io::setup::{load_config};
 
 #[tokio::main]
 async fn main() {
