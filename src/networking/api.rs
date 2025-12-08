@@ -4,19 +4,19 @@ use warp::{Filter,  Reply};
 
 fn build_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (String,), Error = warp::Rejection> + Clone {
     warp::path(base)
-        .and(
-            warp::path::param()
-                .and_then(move |path: String| {
-                    if paths.contains(&path.to_string()) {
-                        ready(Ok(path))
-                    } else {
-                        ready(Err(warp::reject::not_found()))
-                    }
-                })
-        )
-        .map(|path: String| {
-            format!("You are here: {}", path)
+        .and(warp::path::tail())
+        .and_then(move |tail: warp::path::Tail| {
+            let path = tail.as_str().to_string();
+
+            if paths.contains(&path) {
+                ready(Ok(path))
+            } else {
+                ready(Err(warp::reject::not_found()))
+            }
         })
+    .map(|path: String| {
+        format!("You are here: {}", path)
+    })
 }
 
 async fn serve<F>(routes: F, address: [u8; 4], port: u16)
@@ -58,6 +58,7 @@ pub async fn start_server_with_base_values_locally() {
     let paths = vec![
         "hello".to_string(),
         "bye".to_string(),
+        "hello/bye".to_string(),
     ];
 
     start_server(base, paths, [127,0,0,1], 3030).await;
