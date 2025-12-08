@@ -1,25 +1,10 @@
-use serde::Deserialize;
 use notify::{RecommendedWatcher, RecursiveMode, Watcher, event};
 use notify::event::{EventKind, ModifyKind};
-use notify::*;
 use std::{path::Path, fs, time::Duration};
 
 #[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-struct Config {
-    field: Vec<Field>,
-}
-
-#[allow(dead_code)]
-#[derive(Debug, Deserialize)]
-struct Field {
-    name: String,
-    datatype: String,
-}
-
-#[allow(dead_code)]
 fn track_changes_to_configs() {
-    let path = Path::new("configs/shop.toml");
+    let path = Path::new("configs/api");
 
     println!("Watching {:?}", path);
     
@@ -52,19 +37,4 @@ fn watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
     }
 
     Ok(())
-}
-
-fn track_toml() {
-    let data = fs::read_to_string("configs/shop.toml").expect("");
-    let config: Config = match toml::from_str(&data) {
-        Ok(cfg) => cfg,
-        Err(e) => {
-            println!("Failed to read! {:?}", e);
-            Config {
-                field: vec![Field {name : "None".to_string(), datatype: "None".to_string()}], // Default Value
-            }
-        }
-    };
-
-    println!("{:?}", config)
 }

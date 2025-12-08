@@ -2,19 +2,16 @@ api:
   name: ExampleAPI
   version: 1.0
 
-database:
-  driver: "sqlite"
-  connection: "exampleDB.db"
-
-models:
-  Example:
-    table: exampleTable
-    fields:
-      id:        { type: int, primary: true }
-      examplename:   { type: string }
-      title:     { type: string }
-      content:   { type: string }
-      created_at: { type: datetime }
+# For Later, when we tackle the db side
+#models:
+#  Example:
+#    table: exampleTable
+#    fields:
+#      id:        { type: int, primary: true }
+#      examplename:   { type: string }
+#      title:     { type: string }
+#      content:   { type: string }
+#      created_at: { type: datetime }
 
 endpoints:
   - path: /examples
