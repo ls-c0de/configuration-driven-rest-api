@@ -1,0 +1,65 @@
+api:
+  name: ExampleAPI
+  version: 1.0
+
+database:
+  driver: "sqlite"
+  connection: "exampleDB.db"
+
+models:
+  Example:
+    table: exampleTable
+    fields:
+      id:        { type: int, primary: true }
+      examplename:   { type: string }
+      title:     { type: string }
+      content:   { type: string }
+      created_at: { type: datetime }
+
+endpoints:
+  - path: /examples
+    method: GET
+    description: "Get examples"
+    # Let's start a little bit more simple at first
+    #
+    #query:
+    #  limit:  { type: int, default: 20 }
+    #  offset: { type: int, default: 0 }
+    response: 
+      200:
+        data: data
+      404:
+        error: "No Examples exist"
+
+  - path: /examples/{id}
+    method: GET
+    description: "Get a single example"
+    params:
+      id: int
+    response:
+      200:
+        data: Example
+      404:
+        error: "Example not found"
+
+  - path: /examples
+    method: POST
+    description: "Create a new example"
+    request:
+      body:
+        examplename: string
+    response:
+      200: Example
+
+# For later
+#
+#  - path: /examples/{id}
+#    method: PATCH
+#    description: "Change a single example"
+#    params:
+#      id: int
+#    response:
+#      200:
+#        data: Example
+#      404:
+#        error: "Example not found"

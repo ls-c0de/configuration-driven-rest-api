@@ -1,0 +1,16 @@
+# The basic configuration File for the REST-api
+# /api is for the configuration of the endpoints and underlying DB models
+# 
+#
+[api]
+name = "ExampleAPI"
+description = "An Example for the Rest API"
+version = 1.0 # Why not?
+
+[networking] # Where to serve the API
+port = "3030"
+address = "127.0.0.1"
+
+[database] # How to access the database
+driver = "sqlite"
+connection = "exampleDB.db" # It must be possible to also add an IP and Port

@@ -1,6 +1,0 @@
-[cfg]
-table = "example"
-path = "/example"
-
-[layout]
-
