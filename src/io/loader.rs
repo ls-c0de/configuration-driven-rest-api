@@ -16,14 +16,14 @@ fn check_if_config_exists() {
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
 pub struct Config {
-    api: api,
-    networking: networking,
-    database: database,
+    api: Api,
+    networking: Networking,
+    database: Database,
 }
 
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
-struct api {
+struct Api {
     name: String,
     description: String,
     version: f32,
@@ -31,14 +31,14 @@ struct api {
 
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
-struct networking {
-    port: String,
-    address: String,
+struct Networking {
+    port: u16, 
+    address: String, //convert needed
 }
 
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
-struct database {
+struct Database {
     driver: String,
     connection: String,
 }

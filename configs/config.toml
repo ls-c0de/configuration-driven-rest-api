@@ -8,7 +8,7 @@ description = "An Example for the Rest API"
 version = 1.0 # Why not?
 
 [networking] # Where to serve the API
-port = "3030"
+port = 3030
 address = "127.0.0.1"
 
 [database] # How to access the database
