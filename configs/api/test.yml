@@ -1,0 +1,8 @@
+api:
+  name: Test
+  version: 1.0
+
+endpoints:
+  path: "/test" 
+  method: "GET"
+  description: "test description"
