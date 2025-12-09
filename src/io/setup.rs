@@ -61,29 +61,29 @@ fn get_default_config() -> Config {
 #[allow(dead_code)]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
-    api: Api,
-    networking: Networking,
-    database: Database,
+    pub api: Api,
+    pub networking: Networking,
+    pub database: Database,
 }
 
 #[allow(dead_code)]
 #[derive(Debug, Serialize, Deserialize)]
-struct Api {
-    name: String,
-    description: String,
-    version: f32,
+pub struct Api {
+    pub name: String,
+    pub description: String,
+    pub version: f32,
 }
 
 #[allow(dead_code)]
 #[derive(Debug, Serialize, Deserialize)]
-struct Networking {
-    port: u16, 
-    address: String, //convert needed
+pub struct Networking {
+    pub port: u16, 
+    pub address: String, //convert needed
 }
 
 #[allow(dead_code)]
 #[derive(Debug, Serialize, Deserialize)]
-struct Database {
-    driver: String,
-    connection: String,
+pub struct Database {
+    pub driver: String,
+    pub connection: String,
 }

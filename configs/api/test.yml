@@ -1,8 +1,14 @@
 api:
-  name: test
+  name: base
   version: 1.0
 endpoints:
-  path: test
-  method:
-    - GET
-  description: This is a test Description
+  - path: path1
+    methods:
+      - GET
+      - PUT
+    description: This is a test Description
+  - path: path2
+    methods:
+      - GET
+      - PUT
+    description: This is a test Description

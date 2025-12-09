@@ -1,6 +1,6 @@
 use std::vec;
 use std::future::ready;
-use warp::{Filter,  Reply};
+use warp::{Filter, Reply};
 
 fn build_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (String,), Error = warp::Rejection> + Clone {
     warp::path(base)
@@ -15,7 +15,7 @@ fn build_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (Stri
             }
         })
     .map(|path: String| {
-        format!("You are here: {}", path)
+        format!("You are here: {}", path) // Method invokation for db here
     })
 }
 
@@ -51,7 +51,7 @@ pub async fn start_server(base: String, paths: Vec<String>, address: [u8; 4], po
 ///
 /// ## Default Values
 /// * Base: "api"
-/// * Paths: ["hello", "bye"]
+/// * Paths: ["hello", "bye", "hello/bye"]
 /// 
 pub async fn start_server_with_base_values_locally() {
     let base = "api".to_string();

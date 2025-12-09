@@ -4,19 +4,22 @@ use crate::io::design::yaml;
 
 static ROOT: &str = "configs/api/test.yml";
 
-pub fn load_yml() {
+pub fn load_yml() -> yaml::Yaml {
     let input = std::fs::read_to_string(ROOT).unwrap();
 
     let config: Result<yaml::Yaml, _> = serde_saphyr::from_str(&input);
 
-    match config {
-        Ok(parsed_config) => {
-            println!("Parsed successfully: {:?}", parsed_config);
-        }
-        Err(e) => {
-            eprintln!("Failed to parse YAML: {}", e);
-        }
-    }
+    return config.unwrap()
+
+// FIXME: Handling needed!
+//    match config {
+//        Ok(parsed_config) => {
+//            println!("Parsed successfully: {:?}", parsed_config);
+//        }
+//        Err(e) => {
+//            eprintln!("Failed to parse YAML: {}", e);
+//        }
+//    }
 }
 
 pub fn deserialize_yaml_into_file() {
