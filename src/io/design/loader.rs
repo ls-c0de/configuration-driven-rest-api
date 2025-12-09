@@ -22,6 +22,7 @@ pub fn load_yml() -> yaml::Yaml {
 //    }
 }
 
+#[allow(dead_code)]
 pub fn deserialize_yaml_into_file() {
     let default = yaml::Yaml::default();
     let default_str = serde_saphyr::to_string(&default);

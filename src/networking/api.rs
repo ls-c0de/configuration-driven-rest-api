@@ -52,7 +52,8 @@ pub async fn start_server(base: String, paths: Vec<String>, address: [u8; 4], po
 /// ## Default Values
 /// * Base: "api"
 /// * Paths: ["hello", "bye", "hello/bye"]
-/// 
+///
+#[allow(dead_code)] 
 pub async fn start_server_with_base_values_locally() {
     let base = "api".to_string();
     let paths = vec![
