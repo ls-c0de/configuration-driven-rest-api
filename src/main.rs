@@ -1,9 +1,8 @@
-mod networking;
-use crate::networking::api::{start_server};
+mod api;
+use crate::api::networking::filter::{start_server};
 
-mod io;
-use crate::io::setup::{load_config};
-use crate::io::design::loader::{load_yml};
+mod confighandling;
+use crate::confighandling::filehandling::loader::{load_yml, load_config};
 
 #[tokio::main]
 async fn main() {
