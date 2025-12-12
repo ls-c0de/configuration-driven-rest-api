@@ -1,15 +1,16 @@
 // This file will handle the loading process and in the future will incorporate tracker.rs to notify if 
 // something in the .yml files changed
-use crate::confighandling::structures::yaml;
+use crate::confighandling::structures::yaml as yaml_config;
 use crate::confighandling::structures::toml as toml_config;
 
-static YAML_PATH: &str = "configs/api/test.yml";
-static BASE_TOML: &str = "configs/config.toml";
+static YAML_PATH: &str = "settings/api/test.yml";
+static BASE_TOML: &str = "settings/config.toml";
 
-pub fn load_yml() -> yaml::Yaml {
+#[allow(dead_code)]
+pub fn load_yml() -> yaml_config::Yaml {
     let input = std::fs::read_to_string(YAML_PATH).unwrap();
 
-    let config: Result<yaml::Yaml, _> = serde_saphyr::from_str(&input);
+    let config: Result<yaml_config::Yaml, _> = serde_saphyr::from_str(&input);
 
     return config.unwrap()
 
@@ -22,16 +23,6 @@ pub fn load_yml() -> yaml::Yaml {
 //            eprintln!("Failed to parse YAML: {}", e);
 //        }
 //    }
-}
-
-#[allow(dead_code)]
-pub fn deserialize_yaml_into_file() {
-    let default = yaml::Yaml::default();
-    let default_str = serde_saphyr::to_string(&default);
-
-    dbg!("{}", &default_str);
-
-    let _ = std::fs::write(YAML_PATH, default_str.unwrap()); // FIXME: Check needed, if something goes wrong!
 }
 
 /// Load the config.
@@ -70,4 +61,14 @@ pub fn load_config() -> toml_config::Config {
             toml_config::get_default_config()
         }
     }
+}
+
+#[allow(dead_code)]
+pub fn deserialize_yaml_into_file() {
+    let default = yaml_config::Yaml::default();
+    let default_str = serde_saphyr::to_string(&default);
+
+    dbg!("{}", &default_str);
+
+    let _ = std::fs::write(YAML_PATH, default_str.unwrap()); // FIXME: Check needed, if something goes wrong!
 }
