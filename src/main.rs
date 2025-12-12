@@ -1,11 +1,12 @@
 mod api;
+mod confighandling;
+
 use crate::api::networking::filter::{build_3_step_filter};
 use crate::api::networking::server::{start_server_with_route};
-use crate::confighandling::structures::yaml::{SimpleLayout, get_test_values};
 
-mod confighandling;
-#[allow(unused_imports)]
+#[cfg(  feature = "loading")]
 use crate::confighandling::filehandling::loader::{load_yml, load_config};
+use crate::confighandling::structures::yaml::{SimpleLayout, get_test_values};
 
 #[tokio::main]
 async fn main() {

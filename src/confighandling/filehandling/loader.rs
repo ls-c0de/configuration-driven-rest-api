@@ -1,12 +1,16 @@
 // This file will handle the loading process and in the future will incorporate tracker.rs to notify if 
 // something in the .yml files changed
+#[cfg(  feature = "loading")]
 use crate::confighandling::structures::yaml as yaml_config;
+#[cfg(  feature = "loading")]
 use crate::confighandling::structures::toml as toml_config;
 
+#[cfg(  feature = "loading")]
 static YAML_PATH: &str = "settings/api/test.yml";
+#[cfg(  feature = "loading")]
 static BASE_TOML: &str = "settings/config.toml";
 
-#[allow(dead_code)]
+#[cfg(  feature = "loading")]
 pub fn load_yml() -> yaml_config::Yaml {
     let input = std::fs::read_to_string(YAML_PATH).unwrap();
 
@@ -31,7 +35,7 @@ pub fn load_yml() -> yaml_config::Yaml {
 /// If it fails to get the status of the config it will serve default values,
 /// but will not generate a new one.
 /// 
-#[allow(dead_code)]
+#[cfg(  feature = "loading")]
 pub fn load_config() -> toml_config::Config {
     let check = std::fs::exists(BASE_TOML);
 
@@ -63,7 +67,7 @@ pub fn load_config() -> toml_config::Config {
     }
 }
 
-#[allow(dead_code)]
+#[cfg(  feature = "loading")]
 pub fn deserialize_yaml_into_file() {
     let default = yaml_config::Yaml::default();
     let default_str = serde_saphyr::to_string(&default);

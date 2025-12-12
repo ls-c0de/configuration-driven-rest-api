@@ -1,8 +1,9 @@
 // Here we will define the yml structure in structs to use in our loader.rs
 // Maybe we can combine the loading process to get a more streamlined error handling -> Done
+#[cfg(  feature = "loading")]
 use serde::{ Deserialize, Serialize};
 
-// Kinda unnecessary but whatever for now
+// Kinda unnecessary but whatever
 pub fn get_test_values() -> SimpleLayout {
     SimpleLayout {
         base: "api".to_string(),
@@ -15,31 +16,35 @@ pub fn get_test_values() -> SimpleLayout {
     }
 }
 
-// Kinda unnecessary but whatever for now
+// Kinda unnecessary but whatever
 pub struct SimpleLayout { 
     pub base: String,
     pub paths: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[cfg(  feature = "loading")]
 pub struct Yaml {
     pub api: Api,
     pub endpoints: Vec<Endpoints>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[cfg(  feature = "loading")]
 pub struct Api {
     pub name: String,
     pub version: f32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[cfg(  feature = "loading")]
 pub struct Endpoints {
     pub path: String,
     pub methods: Vec<String>,
     pub description: String,
 }
 
+#[cfg(  feature = "loading")]
 impl Default for Yaml {
     fn default() -> Self {
         Yaml {
@@ -49,6 +54,7 @@ impl Default for Yaml {
     }
 }
 
+#[cfg(  feature = "loading")]
 impl Default for Api {
     fn default() -> Self {
         Api {
@@ -58,6 +64,7 @@ impl Default for Api {
     }
 }
 
+#[cfg(  feature = "loading")]
 impl Default for Endpoints {
     fn default() -> Self {
         Endpoints {
@@ -68,6 +75,7 @@ impl Default for Endpoints {
     }
 }
 
+#[cfg(  feature = "loading")]
 impl Endpoints {
     fn set_costum_path(name: &str) -> Self {
         Endpoints {

@@ -1,6 +1,7 @@
+#[cfg(  feature = "loading")]
 use serde::{Deserialize, Serialize};
 
-#[allow(dead_code)]
+#[cfg(  feature = "loading")]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
     pub api: Api,
@@ -8,7 +9,7 @@ pub struct Config {
     pub database: Database,
 }
 
-#[allow(dead_code)]
+#[cfg(  feature = "loading")]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Api {
     pub name: String,
@@ -16,20 +17,21 @@ pub struct Api {
     pub version: f32,
 }
 
-#[allow(dead_code)]
+#[cfg(  feature = "loading")]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Networking {
     pub port: u16, 
     pub address: String, //convert needed
 }
 
-#[allow(dead_code)]
+#[cfg(  feature = "loading")]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Database {
     pub driver: String,
     pub connection: String,
 }
 
+#[cfg(  feature = "loading")]
 pub fn get_default_config() -> Config {
     return Config {
         api: Api {
