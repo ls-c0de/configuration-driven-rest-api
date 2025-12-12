@@ -1,6 +1,7 @@
 use std::vec;
 use warp::{Filter, Reply};
 use crate::api::networking::filter;
+use warp::Rejection;
 
 async fn serve<F>(routes: F, address: [u8; 4], port: u16)
 where
@@ -25,7 +26,19 @@ pub async fn start_server(base: String, paths: Vec<String>, address: [u8; 4], po
         .map(String::from)
         .collect();
 
-    let routes = filter::build_filter(base, paths);
+    let routes = filter::build_3_step_filter(base, paths);
+
+    serve(routes, address, port).await;
+}
+
+/// Starts the server with the given route filter.
+/// 
+pub async fn start_server_with_route<T: Filter<Extract = (String,), Error = Rejection> + Clone + Send + Sync + 'static>
+(routes: T, address: [u8; 4], port: u16) {
+    // let paths: Vec<String> = paths
+    //     .into_iter()
+    //     .map(String::from)
+    //     .collect();
 
     serve(routes, address, port).await;
 }
@@ -37,14 +50,25 @@ pub async fn start_server(base: String, paths: Vec<String>, address: [u8; 4], po
 /// * Paths: ["hello", "bye", "hello/bye"]
 ///
 #[allow(dead_code)] 
-pub async fn start_server_with_base_values_locally() {
-    let base = "api".to_string();
-    let paths = vec![
+pub async fn start_server_localhost(values: Option<Layout>) {
+    let values: Layout = get_test_values();
+
+    start_server(values.base, values.paths, [127,0,0,1], 3030).await;
+}
+
+pub fn get_test_values() -> Layout {
+    Layout {
+        base: "api".to_string(),
+        paths: vec![
         "foo".to_string(),
         "bar".to_string(),
         "foo/bar".to_string(),
         "foo/bar/foo".to_string(),
-    ];
+        ],
+    }
+}
 
-    start_server(base, paths, [127,0,0,1], 3030).await;
+pub struct Layout { 
+    pub base: String,
+    pub paths: Vec<String>,
 }
