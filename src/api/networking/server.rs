@@ -1,7 +1,7 @@
-use std::vec;
+use crate::confighandling::structures::yaml::{SimpleLayout, get_test_values};
 use warp::{Filter, Reply};
-use crate::api::networking::filter;
 use warp::Rejection;
+use crate::build_3_step_filter;
 
 async fn serve<F>(routes: F, address: [u8; 4], port: u16)
 where
@@ -11,24 +11,6 @@ where
     warp::serve(routes)
         .run((address, port))
         .await;
-}
-
-/// Starts the server with the given base and paths.
-/// 
-/// ## Arguments
-/// * `base` - A string slice that holds the base path for the server.
-/// * `paths` - A vector of strings representing valid paths under the base.
-/// * `port` - The port number on which the server will listen.
-/// 
-pub async fn start_server(base: String, paths: Vec<String>, address: [u8; 4], port: u16) {
-    let paths = paths
-        .into_iter()
-        .map(String::from)
-        .collect();
-
-    let routes = filter::build_3_step_filter(base, paths);
-
-    serve(routes, address, port).await;
 }
 
 /// Starts the server with the given route filter.
@@ -45,30 +27,18 @@ pub async fn start_server_with_route<T: Filter<Extract = (String,), Error = Reje
 
 /// Starts the server with default base and paths for quick testing on port 3030.
 ///
-/// ## Default Values
-/// * Base: "api"
-/// * Paths: ["hello", "bye", "hello/bye"]
-///
 #[allow(dead_code)] 
-pub async fn start_server_localhost(values: Option<Layout>) {
-    let values: Layout = get_test_values();
-
-    start_server(values.base, values.paths, [127,0,0,1], 3030).await;
-}
-
-pub fn get_test_values() -> Layout {
-    Layout {
-        base: "api".to_string(),
-        paths: vec![
-        "foo".to_string(),
-        "bar".to_string(),
-        "foo/bar".to_string(),
-        "foo/bar/foo".to_string(),
-        ],
+pub async fn start_server_localhost(values: Option<SimpleLayout>) {
+    match values {
+        Some(v) => {
+            let route = build_3_step_filter(v.base, v.paths);
+            start_server_with_route(route, [127,0,0,1], 3030).await;
+            return;
+        },
+        None => {
+            let v: SimpleLayout = get_test_values();
+            let route = build_3_step_filter(v.base, v.paths);
+            start_server_with_route(route, [127,0,0,1], 3030).await;
+        }
     }
-}
-
-pub struct Layout { 
-    pub base: String,
-    pub paths: Vec<String>,
 }

@@ -1,6 +1,25 @@
 // Here we will define the yml structure in structs to use in our loader.rs
-// Maybe we can combine the loading process to get a more streamlined error handling
+// Maybe we can combine the loading process to get a more streamlined error handling -> Done
 use serde::{ Deserialize, Serialize};
+
+// Kinda unnecessary but whatever for now
+pub fn get_test_values() -> SimpleLayout {
+    SimpleLayout {
+        base: "api".to_string(),
+        paths: vec![
+        "foo".to_string(),
+        "bar".to_string(),
+        "foo/bar".to_string(),
+        "foo/bar/foo".to_string(),
+        ],
+    }
+}
+
+// Kinda unnecessary but whatever for now
+pub struct SimpleLayout { 
+    pub base: String,
+    pub paths: Vec<String>,
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Yaml {

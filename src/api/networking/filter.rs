@@ -2,29 +2,6 @@ use std::future::ready;
 use warp::{Filter};
 use warp::http;
 
-/// deprecated: use build_3_step_filter instead
-/// 
-pub fn build_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (String,), Error = warp::Rejection> + Clone {
-    warp::path(base)
-        .and(warp::path::tail())
-        .and(warp::method())
-        .and_then(move |tail: warp::path::Tail, method: http::Method| {
-            let req = Dummy {
-                path: tail.as_str().to_string(),
-                method: method.clone(),
-            };
-
-            if paths.contains(&req.path) {
-                ready(Ok(req))
-            } else {
-                ready(Err(warp::reject::not_found()))
-            }
-        })
-    .map(|req: Dummy| {
-        format!("{} on this: {}", req.method, req.path) // Method invokation for db here
-    })
-}
-
 pub fn build_3_step_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (String,), Error = warp::Rejection> + Clone {
     warp::path(base)
         .and(warp::path::tail())
