@@ -2,7 +2,7 @@ use notify::{RecommendedWatcher, RecursiveMode, Watcher, event};
 use notify::event::{EventKind, ModifyKind};
 use std::{path::Path, fs, time::Duration};
 
-#[allow(dead_code)]
+#[cfg(feature = "tracker")]
 fn track_changes_to_configs() {
     let path = Path::new("configs/api");
 
