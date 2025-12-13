@@ -15,7 +15,7 @@ where
 
 /// Starts the server with the given route filter.
 /// 
-pub async fn start_server_with_route<T: Filter<Extract = (String,), Error = Rejection> + Clone + Send + Sync + 'static>
+pub async fn start_server_with_route<T: Filter<Extract = (warp::reply::Json,), Error = Rejection> + Clone + Send + Sync + 'static>
 (routes: T, address: [u8; 4], port: u16) {
     // let paths: Vec<String> = paths
     //     .into_iter()
