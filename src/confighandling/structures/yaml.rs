@@ -4,6 +4,7 @@
 use serde::{ Deserialize, Serialize};
 
 // Kinda unnecessary but whatever
+#[cfg(feature = "http")]
 pub fn get_test_values() -> SimpleLayout {
     SimpleLayout {
         base: "api".to_string(),
@@ -17,6 +18,7 @@ pub fn get_test_values() -> SimpleLayout {
 }
 
 // Kinda unnecessary but whatever
+#[cfg(feature = "http")]
 pub struct SimpleLayout { 
     pub base: String,
     pub paths: Vec<String>,

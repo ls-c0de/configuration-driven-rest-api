@@ -1,9 +1,15 @@
+#[cfg(feature = "http")]
 use std::future::ready;
+#[cfg(feature = "http")]
 use warp::reply::Json;
+#[cfg(feature = "http")]
 use warp::{Filter};
+#[cfg(feature = "http")]
 use warp::http;
+#[cfg(feature = "http")]
 use crate::api::networking::methods;
 
+#[cfg(feature = "http")]
 pub fn build_3_step_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (Json,), Error = warp::Rejection> + Clone {
     warp::path(base)
         .and(warp::path::tail())
@@ -13,6 +19,7 @@ pub fn build_3_step_filter(base: String, paths: Vec<String>) -> impl Filter<Extr
         })
 }
 
+#[cfg(feature = "http")]
 fn request_handler(paths: Vec<String>, tail: warp::path::Tail, method: http::Method) -> impl warp::Future<Output = Result<warp::reply::Json, warp::Rejection>> {
     let req = Dummy {
                 path: tail.as_str().to_string(),
@@ -25,6 +32,7 @@ fn request_handler(paths: Vec<String>, tail: warp::path::Tail, method: http::Met
             }
 }
 // Should we even use 2 separate functions for request and response handling?
+#[cfg(feature = "http")]
 fn response_handler(req: Dummy, paths: Vec<String>) -> Result<warp::reply::Json, warp::Rejection> {
     if paths.contains(&req.path) {
                 match req.method {
@@ -59,12 +67,14 @@ fn response_handler(req: Dummy, paths: Vec<String>) -> Result<warp::reply::Json,
 //     }
 // }
 
+#[cfg(feature = "http")]
 #[derive(serde::Serialize)]
 struct Response {
     data: String,
     method: String,
 }
 
+#[cfg(feature = "http")]
 struct Dummy {
     path: String,
     method: http::Method,
