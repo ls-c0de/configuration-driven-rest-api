@@ -11,6 +11,7 @@ use crate::api::networking::server::{start_server_with_route};
 use crate::confighandling::structures::yaml::{SimpleLayout, get_test_values};
 
 #[cfg(feature = "http")]
+// Entry point for REST-Api networking stuff
 pub async fn http() {
     let layout: SimpleLayout = get_test_values();
     let routes = build_3_step_filter(layout.base, layout.paths);
