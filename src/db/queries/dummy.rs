@@ -1,5 +1,3 @@
-use sqlx::{PgPool, Pool, postgres::PgPoolOptions};
-
 pub fn get_element_from_db(path: String) -> String {
     // Dummy implementation, replace with actual database logic
     format!("Data for path: {}", path)
