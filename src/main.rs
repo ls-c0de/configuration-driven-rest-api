@@ -11,7 +11,7 @@ use crate::db::*;
 #[tokio::main]
 async fn main() {
     #[cfg(feature = "database")]
-    db();
+    db().await;
 
     #[cfg(feature = "http")]
     http().await;
