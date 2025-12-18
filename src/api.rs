@@ -1,18 +1,23 @@
 #[cfg(feature = "http")]
-pub mod networking;
+pub mod filter;
+#[cfg(feature = "http")]
+pub mod methods;
+#[cfg(feature = "http")]
+pub mod server;
 
 #[cfg(feature = "http")]
-use crate::api::networking::filter::{build_3_step_filter};
+use crate::api::filter::{build_3_step_filter};
 
 #[cfg(feature = "http")]
-use crate::api::networking::server::{start_server_with_route};
+use crate::api::server::{start_server_with_route};
 
 #[cfg(feature = "http")]
-use crate::confighandling::structures::yaml::{SimpleLayout, get_test_values};
+use crate::specification::legacy::{SimpleLayout, get_test_values};
 
 #[cfg(feature = "http")]
-// Entry point for REST-Api networking stuff
+// Entry point for REST-Api stuff
 pub async fn http() {
+    println!("Starting Server");
     let layout: SimpleLayout = get_test_values();
     let routes = build_3_step_filter(layout.base, layout.paths);
 

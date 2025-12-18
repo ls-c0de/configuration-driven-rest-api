@@ -2,7 +2,7 @@ use std::future::ready;
 use warp::reply::Json;
 use warp::{Filter};
 use warp::http;
-use crate::api::networking::methods;
+use crate::api::methods;
 
 pub fn build_3_step_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (Json,), Error = warp::Rejection> + Clone {
     warp::path(base)

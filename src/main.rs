@@ -1,6 +1,7 @@
 mod api;
-mod confighandling;
+mod config;
 mod db;
+mod specification;
 
 #[cfg(feature = "http")]
 use crate::api::http;

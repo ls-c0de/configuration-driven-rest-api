@@ -1,7 +1,8 @@
-use crate::confighandling::structures::yaml::{SimpleLayout, get_test_values};
+use crate::specification::legacy::{SimpleLayout, get_test_values};
+use crate::api::filter::build_3_step_filter;
+
 use warp::{Filter, Reply};
 use warp::Rejection;
-use crate::api::networking::filter::build_3_step_filter;
 
 async fn serve<F>(routes: F, address: [u8; 4], port: u16)
 where
