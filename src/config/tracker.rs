@@ -1,6 +1,7 @@
 use notify::{RecommendedWatcher, RecursiveMode, Watcher, event};
 use notify::event::{EventKind, ModifyKind};
 use std::{path::Path, fs, time::Duration};
+use notify::PollWatcher;
 
 #[cfg(feature = "tracker")]
 fn track_changes_to_configs() {
@@ -30,7 +31,7 @@ fn watch<P: AsRef<Path>>(path: P) -> notify::Result<()> {
         match res {
             Ok(event) => {
                 println!("Event: {event:?}");
-             track_toml();
+             //track_toml();
             },
             Err(error) => println!("Error: {error:?}"),
         }

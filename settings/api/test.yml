@@ -1,14 +1,15 @@
-api:
-  name: base
-  version: 1.0
-endpoints:
-  - path: path1
-    methods:
-      - GET
-      - PUT
-    description: This is a test Description
-  - path: path2
-    methods:
-      - GET
-      - PUT
-    description: This is a test Description
+name: example-api
+settings:
+
+model:
+  - tablename: users
+    fields:
+      - name: ""
+        datatype: FIELD 1
+      - name: ""
+        datatype: FIELD 2
+endpoint:
+  - description: List users
+    path: /users
+    method: GET
+    table: users
