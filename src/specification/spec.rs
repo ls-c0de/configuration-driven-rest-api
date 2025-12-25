@@ -24,7 +24,7 @@ impl Main {
         Self {
             name: "example-api".into(),
             settings: Settings::test_values(),
-            model: vec![Model::test_values()],
+            model: vec![Model::test_values("users".into()), Model::test_values("posts".into())],
             endpoint: vec![Endpoint::test_values()],
         }
     }
@@ -63,12 +63,12 @@ impl Default for Model {
 }
 
 impl Model {
-    pub fn test_values() -> Self {
+    pub fn test_values(name: String) -> Self {
         Self {
-            tablename: "users".into(),
+            tablename: name,
             fields: vec![
-                Fields::test_values("FIELD 1".to_string()),
-                Fields::test_values("FIELD 2".to_string()),
+                Fields::test_values("id".to_string(), "INTEGER PRIMARY KEY NOT NULL".to_string()),
+                Fields::test_values("email".to_string(), "INTEGER".to_string()),
             ],
         }
     }
@@ -90,10 +90,10 @@ impl<T: Default> Default for Fields<T> {
 }
 
 impl Fields<String> {
-    fn test_values(text: String) -> Self {
+    fn test_values(fieldn: String, dt: String) -> Self {
         Self {
-            name: String::new(),
-            datatype: text.to_string(),
+            name: fieldn,
+            datatype: dt.to_string(),
         }
     }
 }

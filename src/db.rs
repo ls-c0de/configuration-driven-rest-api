@@ -11,10 +11,11 @@ pub async fn db (){
 
     let connection = get_connection_to_db().await;
 
-    let res = sqlx::query("
-        CREATE TABLE IF NOT EXISTS users 
-        ( id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(25) NOT NULL);
-         ").execute(&connection).await.unwrap();
+    // let res = sqlx::query("
+    //     CREATE TABLE IF NOT EXISTS users 
+    //     ( id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(25) NOT NULL);
+    //      ").execute(&connection).await.unwrap();
+    //    println!("{:?}", res);
 
-    println!("{:?}", res);
+    migrations::start_migrations(connection).await;
 }
