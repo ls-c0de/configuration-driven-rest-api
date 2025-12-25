@@ -1,0 +1,21 @@
+name: example-api
+settings:
+
+model:
+  - tablename: users
+    fields:
+      - name: id
+        datatype: INTEGER PRIMARY KEY NOT NULL
+      - name: email
+        datatype: INTEGER
+  - tablename: posts
+    fields:
+      - name: id
+        datatype: INTEGER PRIMARY KEY NOT NULL
+      - name: email
+        datatype: INTEGER
+endpoint:
+  - description: List users
+    path: /users
+    method: GET
+    table: users

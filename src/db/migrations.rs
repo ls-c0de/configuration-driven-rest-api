@@ -1,14 +1,12 @@
-use crate::specification::spec::{Main, Fields};
+use crate::specification::spec::{Fields};
 use sqlx::Sqlite;
 use sqlx::Pool;
 
 pub async fn start_migrations(db: Pool<Sqlite>) {
-    // Build migrations from config
-    // in our case from defaults, other than that would be from loaded config
-    let config = Main::test_values();
+    // Read config
+    let config = crate::config::loader::load_config();
 
-    // Check migrations
-    // FIXME:
+    // FIXME: Check migrations have not been applied yet
 
     // Apply migrations
     for model in config.model {
@@ -18,9 +16,12 @@ pub async fn start_migrations(db: Pool<Sqlite>) {
 
 // Since sqlx does not support dynamic table creation, we build the query manually
 // No Risk of SQL Injection here, since table names and fields are controlled by the provided yaml file
+//
+// FIXME: We probably need to split into CREATE TABLE and ALTER TABLE for adding fields later
+//
 pub async fn create_table(db: Pool<Sqlite>, table_name: String, fields: Vec<Fields<String>>) -> Result<(), sqlx::Error> {
     if !table_name.chars().all(|c| c.is_alphanumeric() || c == '_') {
-        panic!("Ungültiger Tabellenname");
+        panic!("Invalid table name: {}", table_name);
     }
 
     let columns = fields
@@ -41,5 +42,6 @@ pub async fn create_table(db: Pool<Sqlite>, table_name: String, fields: Vec<Fiel
 
     sqlx::query(&query).execute(&db).await?;
 
+    // FIXME:Error handling
     Ok(())
 }

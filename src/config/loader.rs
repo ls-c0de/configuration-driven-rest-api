@@ -1,10 +1,33 @@
 // This file will handle the loading process and in the future will incorporate tracker.rs to notify if 
 // something in the .yml files changed
-#[cfg(feature = "loading")]
 use crate::specification::spec::Main as yaml_config;
 
 #[cfg(feature = "loading")]
-static YAML_PATH: &str = "settings/api/test.yml";
+static YAML_PATH: &str = "settings/api/base.yml";
+
+/// Load the config in api/base.yml
+/// 
+/// If the config doesn't exist, it will serve test values. 
+/// 
+/// If the "deserialize" feature is enabled, it will also create deserialized_from_test_values.yml file from test_values().
+///  
+pub fn load_config() -> yaml_config {
+    #[cfg(feature = "loading")]
+    {
+        crate::config::loader::load_yml()
+    }
+
+    #[cfg(not(feature = "loading"))]
+    {
+        
+        #[cfg(feature = "deserialize")]
+        {
+            deserialize_yaml_into_file();
+        }
+
+        yaml_config::test_values()
+    }
+}
 
 #[cfg(feature = "loading")]
 pub fn load_yml() -> yaml_config {
@@ -25,50 +48,13 @@ pub fn load_yml() -> yaml_config {
 //    }
 }
 
-/// Load the config.
-/// 
-/// If the config doesn't exists, it will generate a new one.
-/// If it fails to get the status of the config it will serve default values,
-/// but will not generate a new one.
-/// 
-// #[cfg(feature = "loading")]
-// pub fn load_config() -> toml_config::Config {
-//     let check = std::fs::exists(BASE_TOML);
-
-//     match check {
-//         Ok(true) =>  {
-//             // read file normally
-
-//             let s = std::fs::read_to_string(BASE_TOML);
-//             toml::from_str(&s.expect("Error")).unwrap() // FIXME: Better Error Handling needed
-//         },
-//         Ok(false) => {
-//             // create file with default values
-
-//             let default = toml_config::get_default_config();
-//             let default_str = toml::to_string_pretty(&default).expect("Something went wrong!");
-//             let _ = std::fs::write(BASE_TOML, default_str); // FIXME: Check needed, if something goes wrong!
-
-//             return default
-//         },
-//         Err(_) => {
-//             // return hardcoded values
-//             println!("Something went wrong!");
-//             println!("Giving default values");
-//             println!("Skipping generating file...");
-//             println!("Have you checked your Permissions?");
-
-//             toml_config::get_default_config()
-//         }
-//     }
-// }
-
-#[cfg(feature = "loading")]
+// Deserialize the hardcoded test values into a .yml file for easier editing
+#[cfg(feature = "deserialize")]
 pub fn deserialize_yaml_into_file() {
     let default = yaml_config::test_values();
     let default_str = serde_saphyr::to_string(&default);
 
     dbg!("{}", &default_str);
 
-    let _ = std::fs::write(YAML_PATH, default_str.unwrap()); // FIXME: Check needed, if something goes wrong!
+    let _ = std::fs::write("settings/api/deserialized_from_test_values.yml", default_str.unwrap()); // FIXME: Check needed, if something goes wrong!
 }

@@ -9,7 +9,7 @@ use crate::api::http;
 #[cfg(feature = "database")]
 use crate::db::*;
 
-#[cfg(feature = "loading")]
+#[cfg(feature = "deserialize")]
 use crate::config::loader::deserialize_yaml_into_file;
 
 #[tokio::main]
@@ -20,6 +20,6 @@ async fn main() {
     #[cfg(feature = "http")]
     http().await;
 
-    #[cfg(feature = "loading")]
+    #[cfg(feature = "deserialize")]
     deserialize_yaml_into_file();
 }
