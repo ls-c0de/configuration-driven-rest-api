@@ -3,19 +3,13 @@ pub mod queries;
 pub mod migrations;
 pub mod pool;
 
-use crate::db::pool::{create_database, get_connection_to_db};
+use crate::db::pool::{get_connection_to_db};
+
+const DB_URL: &str = "sqlite://data.db";
 
 #[cfg(feature = "database")]
-pub async fn db (){
-    create_database().await;
+pub async fn db () {
+    let conn = migrations::start_migrations(DB_URL).await;
 
-    let connection = get_connection_to_db().await;
-
-    // let res = sqlx::query("
-    //     CREATE TABLE IF NOT EXISTS users 
-    //     ( id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(25) NOT NULL);
-    //      ").execute(&connection).await.unwrap();
-    //    println!("{:?}", res);
-
-    migrations::start_migrations(connection).await;
+    migrations::update_migrations(DB_URL, conn).await;
 }
