@@ -5,17 +5,22 @@ model:
   - tablename: users
     fields:
       - name: id
-        datatype: INTEGER PRIMARY KEY NOT NULL
+        datatype: INTEGER
+        constraints: PRIMARY KEY NOT NULL
       - name: email
         datatype: INTEGER
+        constraints: null
   - tablename: posts
     fields:
       - name: id
-        datatype: INTEGER PRIMARY KEY NOT NULL
+        datatype: INTEGER
+        constraints: PRIMARY KEY NOT NULL
       - name: email
         datatype: INTEGER
+        constraints: null
 endpoint:
   - description: List users
     path: /users
     method: GET
     table: users
+    op: get_by_id

@@ -30,6 +30,11 @@ impl Main {
     }
 }
 
+
+///
+/// Settings for the API server
+/// Not used right now
+/// 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Settings {
 
@@ -47,6 +52,9 @@ impl Settings {
     }
 }
 
+///
+/// Model representing a database table
+/// 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Model {
     pub tablename: String,
@@ -67,17 +75,21 @@ impl Model {
         Self {
             tablename: name,
             fields: vec![
-                Fields::test_values("id".to_string(), "INTEGER PRIMARY KEY NOT NULL".to_string()),
-                Fields::test_values("email".to_string(), "INTEGER".to_string()),
+                Fields::test_values("id".to_string(), "INTEGER".to_string(), Some("PRIMARY KEY NOT NULL".to_string())),
+                Fields::test_values("email".to_string(), "INTEGER".to_string(), None),
             ],
         }
     }
 }
 
+///
+/// Field representing a column in a database table
+/// 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Fields<T> {
     pub name: String,
     pub datatype: T,
+    pub constraints: Option<String>,
 }
 
 impl<T: Default> Default for Fields<T> {
@@ -85,25 +97,31 @@ impl<T: Default> Default for Fields<T> {
         Self {
             name: String::new(),
             datatype: T::default(),
+            constraints: None,
         }
     }
 }
 
 impl Fields<String> {
-    fn test_values(fieldn: String, dt: String) -> Self {
+    fn test_values(fieldn: String, dt: String, constraints: Option<String>) -> Self {
         Self {
             name: fieldn,
             datatype: dt.to_string(),
+            constraints: constraints,
         }
     }
 }
 
+///
+/// Endpoint representing an API endpoint
+/// 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Endpoint {
     pub description: String,
     pub path: String,
     pub method: String,
     pub table: String,
+    pub op: String,
 }
 
 impl Default for Endpoint {
@@ -113,6 +131,7 @@ impl Default for Endpoint {
             path: String::new(),
             method: String::new(),
             table: String::new(),
+            op: String::new(),
         }
     }
 }
@@ -124,6 +143,7 @@ impl Endpoint {
             path: "/users".into(),
             method: "GET".into(),
             table: "users".into(),
+            op: "get_by_id".into(),
         }
     }
 }
