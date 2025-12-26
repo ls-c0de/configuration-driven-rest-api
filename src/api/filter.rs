@@ -5,6 +5,8 @@ use warp::http;
 use crate::api::methods;
 
 pub fn build_3_step_filter(base: String, paths: Vec<String>) -> impl Filter<Extract = (Json,), Error = warp::Rejection> + Clone {
+    println!("served Paths: {:?}", paths);
+    
     warp::path(base)
         .and(warp::path::tail())
         .and(warp::method())
@@ -60,6 +62,7 @@ fn response_handler(req: Dummy, paths: Vec<String>) -> Result<warp::reply::Json,
 // }
 
 #[derive(serde::Serialize)]
+#[allow(dead_code)]
 struct Response {
     data: String,
     method: String,

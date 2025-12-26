@@ -12,14 +12,14 @@ use crate::api::filter::{build_3_step_filter};
 use crate::api::server::{start_server_with_route};
 
 #[cfg(feature = "http")]
-use crate::specification::legacy::{SimpleLayout, get_test_values};
-
-#[cfg(feature = "http")]
 // Entry point for REST-Api stuff
 pub async fn http() {
+    use crate::specification::spec::Main;
+    use crate::config::loader::load_config;
+
     println!("Starting Server");
-    let layout: SimpleLayout = get_test_values();
-    let routes = build_3_step_filter(layout.base, layout.paths);
+    let config: Main = load_config();
+    let routes = build_3_step_filter(config.name, config.endpoint.iter().map(|e| e.path.clone()).collect());
 
     start_server_with_route(routes, [127,0,0,1], 3030).await;
 }

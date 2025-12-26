@@ -23,7 +23,13 @@ model:
         constraints: null
 endpoint:
   - description: List users
-    path: /users
+    path: users
     method: GET
     table: users
+    op: get_by_id
+    endpoint:
+  - description: List posts
+    path: posts
+    method: GET
+    table: posts
     op: get_by_id
