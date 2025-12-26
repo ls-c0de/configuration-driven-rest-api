@@ -22,6 +22,7 @@ pub fn load_config() -> yaml_config {
         
         #[cfg(feature = "deserialize")]
         {
+            println!("Deserializing test values into settings/api/deserialized_from_test_values.yml");
             deserialize_yaml_into_file();
         }
 
