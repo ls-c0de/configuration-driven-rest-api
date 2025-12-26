@@ -9,10 +9,3 @@ pub fn save_element_to_db(path: String, data: String) -> String {
     // Dummy implementation, replace with actual database logic
     format!("Saved data for path: {} with data: {}", path, data)
 }
-
-#[allow(dead_code)]
-pub fn connect_to_db(connection_string: String) -> bool {
-    // Dummy implementation, replace with actual database connection logic
-    println!("Connecting to database with connection string: {}", connection_string);
-    true
-}
