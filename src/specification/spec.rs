@@ -19,6 +19,7 @@ impl Default for Main {
     }
 }
 
+#[allow(dead_code)]
 impl Main {
     pub fn test_values() -> Self {
         Self {
